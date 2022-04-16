@@ -7,7 +7,7 @@ import 'package:hex/hex.dart';
 import 'utils/pbkdf2.dart';
 import 'wordlists/all.dart';
 
-const String _defaultLanguage="english";
+const String _defaultLanguage = "english";
 const int _SIZE_BYTE = 255;
 const _INVALID_MNEMONIC = 'Invalid mnemonic';
 const _INVALID_ENTROPY = 'Invalid entropy';
@@ -46,16 +46,18 @@ Uint8List _randomBytes(int size) {
   }
   return bytes;
 }
-String generateMnemonic({
-  int strength = 128,
-  RandomBytes randomBytes = _randomBytes,
-  String language=_defaultLanguage
-}) {
+
+String generateMnemonic(
+    {int strength = 128,
+    RandomBytes randomBytes = _randomBytes,
+    String language = _defaultLanguage}) {
   assert(strength % 32 == 0);
   final entropy = randomBytes(strength ~/ 8);
-  return entropyToMnemonic(HEX.encode(entropy),language: language);
+  return entropyToMnemonic(HEX.encode(entropy), language: language);
 }
-String entropyToMnemonic(String entropyString,{String language=_defaultLanguage}) {
+
+String entropyToMnemonic(String entropyString,
+    {String language = _defaultLanguage}) {
   final entropy = Uint8List.fromList(HEX.decode(entropyString));
   if (entropy.length < 4) {
     throw ArgumentError(_INVALID_ENTROPY);
@@ -75,7 +77,8 @@ String entropyToMnemonic(String entropyString,{String language=_defaultLanguage}
       .map((match) => match.group(0)!)
       .toList(growable: false);
   List<String>? wordlist = WORDLIST[language];
-  String words = chunks.map((binary) => wordlist![_binaryToByte(binary)]).join(' ');
+  String words =
+      chunks.map((binary) => wordlist![_binaryToByte(binary)]).join(' ');
   return words;
 }
 
@@ -89,28 +92,30 @@ String mnemonicToSeedHex(String mnemonic, {String passphrase = ""}) {
     return byte.toRadixString(16).padLeft(2, '0');
   }).join('');
 }
-bool validateMnemonic(String mnemonic,{String language=_defaultLanguage}) {
+
+bool validateMnemonic(String mnemonic, {String language = _defaultLanguage}) {
   try {
-    mnemonicToEntropy(mnemonic,language: language);
+    mnemonicToEntropy(mnemonic, language: language);
   } catch (e) {
     return false;
   }
   return true;
 }
-String mnemonicToEntropy (mnemonic,{String language=_defaultLanguage}) {
+
+String mnemonicToEntropy(mnemonic, {String language = _defaultLanguage}) {
   var words = mnemonic.split(' ');
   if (words.length % 3 != 0) {
     throw new ArgumentError(_INVALID_MNEMONIC);
   }
   final wordlist = WORDLIST[language];
-    // convert word indices to 11 bit binary strings
-    final bits = words.map((word) {
-      final index = wordlist!.indexOf(word);
-      if (index == -1) {
-        throw new ArgumentError(_INVALID_MNEMONIC);
-      }
-      return index.toRadixString(2).padLeft(11, '0');
-    }).join('');
+  // convert word indices to 11 bit binary strings
+  final bits = words.map((word) {
+    final index = wordlist!.indexOf(word);
+    if (index == -1) {
+      throw new ArgumentError(_INVALID_MNEMONIC);
+    }
+    return index.toRadixString(2).padLeft(11, '0');
+  }).join('');
   // split the binary string into ENT/CS
   final dividerIndex = (bits.length / 33).floor() * 32;
   final entropyBits = bits.substring(0, dividerIndex);

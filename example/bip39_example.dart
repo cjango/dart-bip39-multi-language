@@ -1,4 +1,4 @@
-import 'package:bip39_multi_nullsafety/bip39_multi_nullsafety.dart' as bip39;
+import 'package:jason_bip39_multi_nullsafety/bip39.dart' as bip39;
 
 main() async {
   String randomMnemonic = bip39.generateMnemonic();
