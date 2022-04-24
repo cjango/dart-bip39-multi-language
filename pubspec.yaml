@@ -1,4 +1,4 @@
-name: jason_bip39_multi_nullsafety
+name: bip39_multi_language
 description: Dart multilingual implementation of Bitcoin BIP39 Mnemonic code for generating deterministic keys
 version: 1.0.7
 homepage: https://github.com/poka-IT/bip39.git
