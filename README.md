@@ -1,5 +1,6 @@
 # BIP39_MULTI
 
+这个不能删除，flutter要用的
 Dart implementation of [Bitcoin BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki): Mnemonic code for generating deterministic keys
 
 Convert from [bitcoinjs/bip39](https://github.com/bitcoinjs/bip39)
